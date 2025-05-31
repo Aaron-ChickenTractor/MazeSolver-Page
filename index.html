@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <style>
+    body, html {
+      height: 100%; /* Ensure the full height is utilized */
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Hide scrollbars */
+      text-align: center;
+      background-image: url('StreamingAssets/background.png');
+      background-size: cover;
+      background-position: center;
+    }
+    #unity-canvas {
+      display: block; /* Removes extra space below the canvas */
+      position: absolute; /* Ensure absolute positioning for flexibility */
+      top: 0; left: 0; right: 0; bottom: 0; /* Center the canvas */
+      margin: auto; /* Auto-margins for automatic centering in both dimensions */
+    }
+  </style>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Maze Solver</title>
+  </head>
+  <body>
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <script src="Build/v1.0.0.loader.js"></script>
+    <script>
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+      }
+
+      function resizeCanvas() {
+        const marginHorizontal = 20; // Margin for left and right
+        const marginVertical = 20; // Margin for top and bottom
+        const canvas = document.getElementById('unity-canvas');
+        const aspectRatio = 1 / 1; // Set the aspect ratio for the game
+
+        let width = window.innerWidth - 2 * marginHorizontal;
+        let height = window.innerHeight - 2 * marginVertical;
+
+        if (width / height > aspectRatio) {
+          // If the window is wider than the aspect ratio, base on height
+          width = height * aspectRatio;
+        } else {
+          // If the window is taller than the aspect ratio, base on width
+          height = width / aspectRatio;
+        }
+
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        canvas.style.marginTop = `${(window.innerHeight - height) / 2}px`; // Ensure vertical centering
+        canvas.style.marginBottom = `${(window.innerHeight - height) / 2}px`; // Ensure vertical centering
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      document.addEventListener('DOMContentLoaded', resizeCanvas);
+
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        dataUrl: "Build/v1.0.0.data",
+        frameworkUrl: "Build/v1.0.0.framework.js",
+        codeUrl: "Build/v1.0.0.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Chicken Tractor LLC",
+        productName: "MazeSolver",
+        productVersion: "1.0",
+      });
+    </script>
+  </body>
+</html>
